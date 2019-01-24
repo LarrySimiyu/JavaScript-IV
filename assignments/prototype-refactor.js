@@ -16,15 +16,24 @@ Prototype Refactor
   * destroy() // prototype method -> returns the string: 'Object was removed from the game.'
 */
 
-function GameObject(attrs) {
-    this.createdAt  =   attrs.createdAt;
-    this.dimensions =   attrs.dimensions;
-    this.destroy    =   function() {
-          return `${this.name} was removed from the game`;
-    }
+// function GameObject(attrs) {
+//     this.createdAt  =   attrs.createdAt;
+//     this.dimensions =   attrs.dimensions;
+//     this.destroy    =   function() {
+//           return `${this.name} was removed from the game`;
+//     }
 
+//  }
+
+ class GameObject {
+     constructor(attrs) {
+        this.createdAt  =   attrs.createdAt;
+        this.dimensions =   attrs.dimensions;
+     }
+     destroy() {
+        return `${this.name} was removed from the game`;
+     }
  }
-
 
 //  const block = new GameObject({
 //   createdAt: 1620,
@@ -41,14 +50,26 @@ function GameObject(attrs) {
   * should inherit destroy() from GameObject's prototype
 */
 
-function CharacterStats(characterAttr) {
-  GameObject.call(this, characterAttr);
-  this.healthPoints = characterAttr.healthPoints;
-  this.name         = characterAttr.name;
-  this.takeDamage   = function() {
-    return `${this.name} took damage`;
-  }
+// function CharacterStats(characterAttr) {
+//   GameObject.call(this, characterAttr);
+//   this.healthPoints = characterAttr.healthPoints;
+//   this.name         = characterAttr.name;
+//   this.takeDamage   = function() {
+//     return `${this.name} took damage`;
+//   }
 
+// }
+
+class CharacterStats extends GameObject {
+    constructor(characterAttr) {
+        super(characterAttr);
+        this.healthPoints = characterAttr.healthPoints;
+        this.name         = characterAttr.name;
+
+    }
+    takeDamage() {
+        return `${this.name} took damage`;
+    }
 }
 
 /*
@@ -61,16 +82,29 @@ function CharacterStats(characterAttr) {
   * should inherit takeDamage() from CharacterStats
 */
 
-function Humanoid(humanAttr) {
-  CharacterStats.call(this,humanAttr);
-  this.team       = humanAttr.team;
-  this.weapons    = humanAttr.weapons;
-  this.language   = humanAttr.language;
-  this.greet      = function() {
-    return `${this.name} offers a greeting in ${this.language}`;
+// function Humanoid(humanAttr) {
+//   CharacterStats.call(this,humanAttr);
+//   this.team       = humanAttr.team;
+//   this.weapons    = humanAttr.weapons;
+//   this.language   = humanAttr.language;
+//   this.greet      = function() {
+//     return `${this.name} offers a greeting in ${this.language}`;
 
-  }
+//   }
 
+// }
+
+class Humanoid extends CharacterStats {
+    constructor(humanAttr) {
+        super(humanAttr);
+        this.team       = humanAttr.team;
+        this.weapons    = humanAttr.weapons;
+        this.language   = humanAttr.language;
+
+    }
+    greet() {
+        return `${this.name} offers a greeting in ${this.language}`;
+    }
 }
  
 /*
@@ -98,6 +132,7 @@ function Humanoid(humanAttr) {
     ],
     language: 'Common Tongue',
   });
+
 
   const swordsman = new Humanoid({
     createdAt: new Date(),
